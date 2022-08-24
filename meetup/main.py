@@ -16,7 +16,7 @@ def main(
         bicycle_database = BicycleDatabase()
         bicycle_df = bicycle_database.retrieve_bicycle_data(location_id, start_date, end_date)
     except RetrieveException as exc:
-        raise f'Could not retrieve data due to: {exc}'
+        raise Exception(f'Could not retrieve data due to: {exc}')
 
     # Transform the data
     bicycle_transformed_df = transform.transform(bicycle_df, aggregation_level)
@@ -25,7 +25,7 @@ def main(
     try:
         bicycle_database.upload_bicycle_data(bicycle_transformed_df)
     except UploadException as exc:
-        raise f'Could not upload data due to: {exc}'
+        raise Exception(f'Could not upload data due to: {exc}')
 
 
 if __name__ == '__main__':

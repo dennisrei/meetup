@@ -1,3 +1,5 @@
+import os
+
 import pandas as pd
 import datetime as dt
 
@@ -8,7 +10,11 @@ from singleton_decorator import singleton
 class BicycleDatabase:
 
     def __init__(self):
-        self.bicycle_properties = BicycleProperties()
+        self.bicycle_properties = BicycleProperties(
+            os.environ.get('DB_PASSWORD'),
+            os.environ.get('DB_USER'),
+            os.environ.get('CONNECTION_STRING')
+        )
 
     def retrieve_bicycle_data(
         self,
@@ -21,6 +27,7 @@ class BicycleDatabase:
         :param dt.datetime start_date:
         :param dt.datetime end_date:
         :return: pd.DataFrame
+        :raise: RetrieveException
         """
         pass
 
@@ -30,6 +37,7 @@ class BicycleDatabase:
     ):
         """Uploads a dataframe to a database:
         :param pd.DataFrame df:
+        :raise: UploadException
         """
         pass
 
@@ -38,7 +46,11 @@ class BicycleDatabase:
 class BicycleDatabaseAdvanced:
 
     def __init__(self):
-        self.bicycle_properties = BicycleProperties()
+        self.bicycle_properties = BicycleProperties(
+            os.environ.get('DB_PASSWORD'),
+            os.environ.get('DB_USER'),
+            os.environ.get('CONNECTION_STRING')
+        )
 
     def retrieve_bicycle_data(
             self,
@@ -51,6 +63,7 @@ class BicycleDatabaseAdvanced:
         :param dt.datetime start_date:
         :param dt.datetime end_date:
         :return: pd.DataFrame
+        :raise: RetrieveException
         """
         pass
 
@@ -60,5 +73,6 @@ class BicycleDatabaseAdvanced:
     ):
         """Uploads a dataframe to a database:
         :param pd.DataFrame df:
+        :raise: UploadException
         """
         pass
