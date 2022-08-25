@@ -13,7 +13,7 @@ def transform(
 
     # Check for missing values in the data
     column = 'bicycle_count'
-    df.loc[df[column] == np.nan, 'measurements_missing'] = True
+    df.loc[df[column].isnull(), 'measurements_missing'] = True
 
     return _aggregate_data_to_frequency(df, aggregation_level)
 
@@ -22,7 +22,10 @@ def _aggregate_data_to_frequency(
         df: pd.DataFrame,
         aggregation_level: str
 ) -> pd.DataFrame:
-    return df.groupby(['location_code', pd.Grouper(key='measurement_time', freq=aggregation_level)]).agg(
+    df['measurement_time'] = pd.to_datetime(df['measurement_time'])
+    return df.groupby(['location_code',
+                       pd.Grouper(key='measurement_time', freq=aggregation_level)])\
+        .agg(
         bicycle_count=('bicycle_count', 'sum'),
         measurement_missing=('measurements_missing', 'sum')
-    )
+    ).reset_index()
